@@ -40,7 +40,7 @@ async function bootstrap() {
   await app.listen(port);
 
   logger.log(`=======================================================`);
-  logger.log(`🚀 Wanderflow Backend API is running on: http://localhost:${port}/${prefix}`);
+  logger.log(`🚀 Hotel Booking Backend API is running on: http://localhost:${port}/${prefix}`);
   logger.log(`🌐 CORS enabled for Frontend URL: ${frontendUrl}`);
   logger.log(`=======================================================`);
 }

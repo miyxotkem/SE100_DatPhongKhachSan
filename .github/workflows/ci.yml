@@ -1,4 +1,4 @@
-name: Wanderflow Monorepo CI
+name: Hotel Booking Monorepo CI
 
 on:
   push:

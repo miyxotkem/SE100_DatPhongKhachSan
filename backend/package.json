@@ -1,8 +1,8 @@
 {
   "name": "backend",
   "version": "0.0.1",
-  "description": "SE347 - TripPlanner / Wanderflow API Server",
-  "author": "Tech Lead",
+  "description": "SE100 - Hotel Booking API Server",
+  "author": "Thinh Phat Ho",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
