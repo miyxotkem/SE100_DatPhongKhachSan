@@ -1,21 +1,21 @@
-# 🌍 TripPlanner (Wanderflow) — Nền Tảng Lập Lịch Trình Du Lịch Thông Minh
+# 🏨 HotelBooking — Nền Tảng Đặt Phòng Khách Sạn Trực Tuyến
 
-> **Môn học:** SE347 - Công nghệ Web và Ứng dụng  
-> **Giảng viên hướng dẫn:** ThS. Trần Thị Hồng Yến  
+> **Môn học:** SE100  
+> **Chủ dự án:** Thinh Phat Ho (miyxotkem)  
 > **Kiến trúc:** Monorepo (NestJS Backend + Vue 3 Frontend + PostgreSQL 16)
 
 ---
 
-##  1. Kiến Trúc Công Nghệ (Tech Stack)
+## 🛠️ 1. Kiến Trúc Công Nghệ (Tech Stack)
 
 * **Backend:** [NestJS](https://nestjs.com/) (TypeScript), RESTful API, Global Exception Filters, Transform Interceptors.
-* **Database & ORM:** [PostgreSQL 16](https://www.postgresql.org/) (Docker), [Prisma ORM](https://www.prisma.io/) (11 bảng CSDL chuẩn 3NF).
+* **Database & ORM:** [PostgreSQL 16](https://www.postgresql.org/) (Docker), [Prisma ORM](https://www.prisma.io/) (CSDL chuẩn 3NF).
 * **Authentication:** JWT (JSON Web Token), Passport-JWT, Bcrypt hashing.
-* **Media & Cloud Storage:** [Cloudinary](https://cloudinary.com/) SDK cho tải ảnh Avatar và Cover chuyến đi.
+* **Media & Cloud Storage:** [Cloudinary](https://cloudinary.com/) SDK cho tải ảnh Avatar, phòng và khách sạn.
 * **Frontend:** [Vue 3](https://vuejs.org/) (Composition API, `<script setup lang="ts">`), [Vite](https://vitejs.dev/).
-* **Styling:** [Tailwind CSS](https://tailwindcss.com/) (chuẩn màu Figma: Brand Orange `#F97316`, Ocean Blue `#0284C7`, Slate `#F8FAFC`).
-* **State & Routing:** [Pinia](https://pinia.vuejs.org/), [Vue Router 4](https://router.vuejs.org/) (2 Layouts: `MainLayout` & `PlannerLayout`).
-* **Bản đồ & Kéo thả (Module 3):** [Mapbox GL JS](https://www.mapbox.com/) & [vuedraggable](https://github.com/SortableJS/vue.draggable.next) (kéo thả với thuật toán Fractional Indexing).
+* **Styling:** [Tailwind CSS](https://tailwindcss.com/) (thiết kế hiện đại, responsive).
+* **State & Routing:** [Pinia](https://pinia.vuejs.org/), [Vue Router 4](https://router.vuejs.org/).
+* **Bản đồ:** [Mapbox GL JS](https://www.mapbox.com/) định vị vị trí khách sạn và tìm kiếm theo khu vực.
 * **CI/CD & DevOps:** Docker Compose, GitHub Actions CI Workflow (`.github/workflows/ci.yml`).
 
 ---
@@ -23,26 +23,26 @@
 ## 📁 2. Cấu Trúc Thư Mục Monorepo
 
 ```
-se347-smart-travel-planner/
+SE100_DatPhongKhachSan/
 ├── .github/
 │   ├── workflows/
 │   │   └── ci.yml               # GitHub Actions CI tự động kiểm tra build BE & FE
-│   └── pull_request_template.md # Mẫu Pull Request chuẩn doanh nghiệp
+│   └── pull_request_template.md # Mẫu Pull Request chuẩn dự án
 ├── backend/                     # Source code Backend (NestJS + Prisma)
 │   ├── prisma/
-│   │   └── schema.prisma        # Lược đồ CSDL chi tiết 11 bảng
+│   │   └── schema.prisma        # Lược đồ CSDL chi tiết các bảng
 │   └── src/
 │       ├── common/              # Bộ lọc lỗi, interceptor, upload cloudinary
-│       ├── modules/             # Các module nghiệp vụ (auth, trips, places)
+│       ├── modules/             # Các module nghiệp vụ (auth, hotels, rooms, bookings)
 │       ├── prisma/              # PrismaService kết nối database
 │       └── main.ts              # Entrypoint (CORS, ValidationPipe, Prefix api/v1)
 ├── frontend/                    # Source code Frontend (Vue 3 + Vite + Tailwind)
 │   └── src/
-│       ├── components/common/   # BaseButton, BaseInput chuẩn Figma
-│       ├── layouts/             # MainLayout (Màn 4 & 5) & PlannerLayout (Màn 6)
+│       ├── components/common/   # BaseButton, BaseInput chuẩn thiết kế
+│       ├── layouts/             # MainLayout & BookingLayout
 │       ├── router/              # Cấu hình định tuyến và phân quyền
 │       ├── services/            # Axios API Client có Interceptor
-│       └── views/               # Landing, Login, Register, Dashboard, Trips, Planner
+│       └── views/               # Landing, Login, Register, Dashboard, Hotels, Booking
 ├── docker-compose.yml           # Khởi chạy PostgreSQL 16 (Port 5434)
 ├── .env.example                 # File cấu hình mẫu biến môi trường
 ├── .gitignore                   # Cấu hình Git bỏ qua file rác
@@ -101,9 +101,9 @@ npm run dev
 
 ###  4.2. Quy Tắc Đặt Tên Nhánh (Branch Naming)
 Mọi nhánh tính năng phải được tách ra từ nhánh **`develop`** mới nhất:
-- Tính năng Backend: `feat/be-<tên-chức-năng>` (VD: `feat/be-auth-jwt`, `feat/be-trips-crud`)
-- Tính năng Frontend: `feat/fe-<tên-chức-năng>` (VD: `feat/fe-login-page`, `feat/fe-my-trips`)
-- Sửa lỗi: `fix/be-<tên-lỗi>` hoặc `fix/fe-<tên-lỗi>` (VD: `fix/fe-navbar-avatar`)
+- Tính năng Backend: `feat/be-<tên-chức-năng>` (VD: `feat/be-auth-jwt`, `feat/be-hotels-crud`, `feat/be-booking`)
+- Tính năng Frontend: `feat/fe-<tên-chức-năng>` (VD: `feat/fe-login-page`, `feat/fe-hotel-list`, `feat/fe-booking-flow`)
+- Sửa lỗi: `fix/be-<tên-lỗi>` hoặc `fix/fe-<tên-lỗi>` (VD: `fix/fe-booking-date-picker`)
 - Cấu hình / Tối ưu: `chore/<nội-dung>` hoặc `refactor/<nội-dung>`
 
 ---
@@ -111,8 +111,8 @@ Mọi nhánh tính năng phải được tách ra từ nhánh **`develop`** mớ
 ###  4.3. Quy Tắc Viết Commit Message (Conventional Commits)
 Thông điệp commit phải rõ ràng, giải thích mình đã làm gì:
 - `feat(scope): ...` — Thêm tính năng mới (VD: `feat(auth): thêm api đăng nhập bằng jwt`)
-- `fix(scope): ...` — Sửa lỗi (VD: `fix(planner): sửa lỗi kéo thả địa điểm không lưu order`)
-- `style(scope): ...` — Căn chỉnh CSS, giao diện Figma, không đổi logic code
+- `fix(scope): ...` — Sửa lỗi (VD: `fix(booking): sửa lỗi tính toán ngày nhận/trả phòng`)
+- `style(scope): ...` — Căn chỉnh CSS, giao diện người dùng, không đổi logic code
 - `refactor(scope): ...` — Tái cấu trúc code, dọn dẹp logic
 - `docs(scope): ...` — Viết thêm hoặc sửa tài liệu README, swagger
 
@@ -130,7 +130,7 @@ git pull origin develop
 
 #### 🔹 Bước 2: Tạo nhánh mới từ `develop` sạch
 ```bash
-git checkout -b feat/fe-my-trips
+git checkout -b feat/fe-hotel-list
 ```
 
 #### 🔹 Bước 3: Code và Commit từng phần nhỏ (Atomic Commits)
@@ -138,8 +138,8 @@ git checkout -b feat/fe-my-trips
 - Làm xong một component, một hàm -> Kiểm tra chạy được -> Commit ngay:
 ```bash
 git status
-git add src/views/MyTripsView.vue
-git commit -m "feat(trips): hoàn thiện giao diện grid danh sách chuyến đi"
+git add src/views/HotelListView.vue
+git commit -m "feat(hotels): hoàn thiện giao diện danh sách khách sạn"
 ```
 
 #### 🔹 Bước 4: Đồng bộ `develop` về nhánh trước khi tạo PR (BƯỚC QUAN TRỌNG NHẤT ĐỂ TRÁNH CONFLICT)
@@ -147,7 +147,7 @@ Trước khi đẩy code lên GitHub, hãy kéo những thay đổi mới nhất
 ```bash
 git checkout develop
 git pull origin develop
-git checkout feat/fe-my-trips
+git checkout feat/fe-hotel-list
 git merge develop
 ```
 - **Nếu không có conflict:** Git sẽ tự merge êm đẹp.
@@ -155,11 +155,11 @@ git merge develop
 
 #### 🔹 Bước 5: Đẩy nhánh lên GitHub và Tạo Pull Request (PR)
 ```bash
-git push -u origin feat/fe-my-trips
+git push -u origin feat/fe-hotel-list
 ```
-1. Truy cập vào GitHub Repository: [phamhuy273/se347-smart-travel-planner](https://github.com/phamhuy273/se347-smart-travel-planner).
+1. Truy cập vào GitHub Repository: [miyxotkem/SE100_DatPhongKhachSan](https://github.com/miyxotkem/SE100_DatPhongKhachSan).
 2. Nhấn nút **Compare & pull request**.
-3. **CHÚ Ý:** Chọn `base: develop` ⬅️ `compare: feat/fe-my-trips`.
+3. **CHÚ Ý:** Chọn `base: develop` ⬅️ `compare: feat/fe-hotel-list`.
 4. Điền tiêu đề và nội dung theo form **Pull Request Template** có sẵn (nêu rõ các màn hình đã làm, ảnh chụp demo nếu là FE).
 
 #### 🔹 Bước 6: Review & Merge
@@ -168,7 +168,7 @@ git push -u origin feat/fe-my-trips
 3. Khi nhận được **Approve**, Tech Lead hoặc tác giả sẽ bấm **Squash and merge** để gộp commit gọn gàng vào `develop`.
 4. Xóa nhánh tính năng cũ trên GitHub và ở máy local để tránh rác nhánh:
 ```bash
-git branch -d feat/fe-my-trips
+git branch -d feat/fe-hotel-list
 ```
 
 ---
@@ -192,7 +192,7 @@ Khi chạy `git merge develop` mà màn hình hiện chữ đỏ `CONFLICT (cont
    ```bash
    git add .
    git commit -m "merge: giải quyết conflict với nhánh develop"
-   git push origin feat/fe-my-trips
+   git push origin feat/fe-hotel-list
    ```
 
 ---

@@ -22,10 +22,10 @@ const route = useRoute();
 const showUserMenu = ref(false);
 const searchQuery = ref('');
 
-// User profile state matching Figma
+// User profile state
 const user = ref({
-  name: 'Pham Huy',
-  email: 'phamhuy@example.com',
+  name: 'Thinh Phat Ho',
+  email: 'hothinhphat06@gmail.com',
 });
 
 const menuItems = [

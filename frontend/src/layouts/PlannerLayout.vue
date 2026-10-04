@@ -21,8 +21,8 @@ const showUserMenu = ref(false);
 const searchQuery = ref('');
 
 const user = ref({
-  name: 'Pham Huy',
-  email: 'phamhuy@example.com',
+  name: 'Thinh Phat Ho',
+  email: 'hothinhphat06@gmail.com',
 });
 
 const handleLogout = () => {
