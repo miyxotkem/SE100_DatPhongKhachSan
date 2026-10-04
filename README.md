@@ -78,7 +78,7 @@ SE100_DatPhongKhachSan/
 │       ├── router/              # Thiết lập route và guard phân quyền
 │       ├── services/            # Axios Client tích hợp Interceptor
 │       └── views/               # Landing, Login, Register, Dashboard, Hotels, Booking
-├── docker-compose.yml           # Cấu hình chạy PostgreSQL 16 (Port 5434)
+├── docker-compose.yml           # Cấu hình chạy PostgreSQL 16 (Port 5435)
 ├── .env.example                 # File mẫu cấu hình biến môi trường
 ├── .gitignore                   # Cấu hình bỏ qua tệp tin rác
 └── README.md                    # Tài liệu hướng dẫn & quy chuẩn dự án
@@ -93,7 +93,7 @@ SE100_DatPhongKhachSan/
 | :--- | :--- | :--- |
 | **Frontend Web** | `5173` | `http://localhost:5173` |
 | **Backend API** | `3000` | `http://localhost:3000/api/v1` |
-| **PostgreSQL Database** | `5434` | Chạy nền qua Docker (tránh trùng cổng mặc định 5432) |
+| **PostgreSQL Database** | `5435` | Chạy nền qua Docker (tránh trùng cổng mặc định 5432 & 5434) |
 
 ---
 
