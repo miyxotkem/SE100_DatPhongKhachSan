@@ -1,73 +1,119 @@
-# 🏨 HotelBooking — Nền Tảng Đặt Phòng Khách Sạn Trực Tuyến
+# 🏨 SE100 — Hotel Booking Platform
+### Nền Tảng Đặt Phòng Khách Sạn Trực Tuyến
 
-> **Môn học:** SE100  
-> **Chủ dự án:** Thinh Phat Ho (miyxotkem)  
-> **Kiến trúc:** Monorepo (NestJS Backend + Vue 3 Frontend + PostgreSQL 16)
-
----
-
-## 🛠️ 1. Kiến Trúc Công Nghệ (Tech Stack)
-
-* **Backend:** [NestJS](https://nestjs.com/) (TypeScript), RESTful API, Global Exception Filters, Transform Interceptors.
-* **Database & ORM:** [PostgreSQL 16](https://www.postgresql.org/) (Docker), [Prisma ORM](https://www.prisma.io/) (CSDL chuẩn 3NF).
-* **Authentication:** JWT (JSON Web Token), Passport-JWT, Bcrypt hashing.
-* **Media & Cloud Storage:** [Cloudinary](https://cloudinary.com/) SDK cho tải ảnh Avatar, phòng và khách sạn.
-* **Frontend:** [Vue 3](https://vuejs.org/) (Composition API, `<script setup lang="ts">`), [Vite](https://vitejs.dev/).
-* **Styling:** [Tailwind CSS](https://tailwindcss.com/) (thiết kế hiện đại, responsive).
-* **State & Routing:** [Pinia](https://pinia.vuejs.org/), [Vue Router 4](https://router.vuejs.org/).
-* **Bản đồ:** [Mapbox GL JS](https://www.mapbox.com/) định vị vị trí khách sạn và tìm kiếm theo khu vực.
-* **CI/CD & DevOps:** Docker Compose, GitHub Actions CI Workflow (`.github/workflows/ci.yml`).
+<p align="left">
+  <img src="https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white" alt="NestJS" />
+  <img src="https://img.shields.io/badge/Vue.js-4FC08D?style=for-the-badge&logo=vue.js&logoColor=white" alt="Vue 3" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge" alt="License" />
+</p>
 
 ---
 
-## 📁 2. Cấu Trúc Thư Mục Monorepo
+### 📋 Thông Tin Dự Án
 
-```
+| Hạng mục | Chi tiết |
+| :--- | :--- |
+| **Môn học** | SE100 |
+| **Chủ dự án** | **Thinh Phat Ho** ([@miyxotkem](https://github.com/miyxotkem)) |
+| **Kiến trúc** | Monorepo (NestJS Backend + Vue 3 Frontend + PostgreSQL 16) |
+| **Kho lưu trữ** | [miyxotkem/SE100_DatPhongKhachSan](https://github.com/miyxotkem/SE100_DatPhongKhachSan) |
+
+---
+
+## 📑 Mục Lục
+
+1. [Kiến Trúc Công Nghệ (Tech Stack)](#1-kiến-trúc-công-nghệ-tech-stack)
+2. [Cấu Trúc Thư Mục Monorepo](#2-cấu-trúc-thư-mục-monorepo)
+3. [Hướng Dẫn Cài Đặt & Khởi Chạy (Local Development)](#3-hướng-dẫn-cài-đặt--khởi-chạy-local-development)
+4. [Quy Chuẩn Làm Việc Git & GitHub](#4-quy-chuẩn-làm-việc-git--github)
+   - [4.1. Ba Điều Cấm](#41-ba-điều-cấm)
+   - [4.2. Quy Tắc Đặt Tên Nhánh](#42-quy-tắc-đặt-tên-nhánh)
+   - [4.3. Quy Chuẩn Commit Message](#43-quy-chuẩn-commit-message)
+   - [4.4. Quy Trình 6 Bước Làm Việc Hằng Ngày](#44-quy-trình-6-bước-làm-việc-hằng-ngày)
+   - [4.5. Hướng Dẫn Xử Lý Xung Đột (Conflict)](#45-hướng-dẫn-xử-lý-xung-đột-conflict)
+   - [4.6. Phân Vùng Quyền Hạn Trong Monorepo](#46-phân-vùng-quyền-hạn-trong-monorepo)
+
+---
+
+## 1. Kiến Trúc Công Nghệ (Tech Stack)
+
+| Lĩnh vực | Công nghệ / Thư viện | Mô tả vai trò |
+| :--- | :--- | :--- |
+| **Backend** | [NestJS](https://nestjs.com/) (TypeScript) | Xây dựng RESTful API, Global Exception Filters, Transform Interceptors. |
+| **Database & ORM** | [PostgreSQL 16](https://www.postgresql.org/) + [Prisma ORM](https://www.prisma.io/) | Cơ sở dữ liệu quan hệ chuẩn 3NF, quản lý schema và migrations. |
+| **Authentication** | JWT, Passport-JWT, Bcrypt | Xác thực bảo mật người dùng, phân quyền truy cập. |
+| **Media Storage** | [Cloudinary](https://cloudinary.com/) SDK | Lưu trữ đám mây và tối ưu hoá ảnh đại diện, ảnh phòng, ảnh khách sạn. |
+| **Frontend** | [Vue 3](https://vuejs.org/) + [Vite](https://vitejs.dev/) | Giao diện hiện đại sử dụng Composition API (`<script setup lang="ts">`). |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com/) | Thiết kế giao diện trực quan, tối ưu hiển thị responsive đa màn hình. |
+| **State & Route** | [Pinia](https://pinia.vuejs.org/) + [Vue Router 4](https://router.vuejs.org/) | Quản lý luồng trạng thái tập trung và định tuyến bảo vệ màn hình. |
+| **Bản đồ** | [Mapbox GL JS](https://www.mapbox.com/) | Hiển thị toạ độ khách sạn, hỗ trợ tìm kiếm phòng theo vị trí địa lý. |
+| **CI/CD & DevOps** | Docker Compose, GitHub Actions | Container hoá database môi trường local; CI tự động kiểm tra build BE/FE. |
+
+---
+
+## 2. Cấu Trúc Thư Mục Monorepo
+
+```plaintext
 SE100_DatPhongKhachSan/
 ├── .github/
 │   ├── workflows/
 │   │   └── ci.yml               # GitHub Actions CI tự động kiểm tra build BE & FE
 │   └── pull_request_template.md # Mẫu Pull Request chuẩn dự án
-├── backend/                     # Source code Backend (NestJS + Prisma)
+├── backend/                     # Mã nguồn Backend (NestJS + Prisma)
 │   ├── prisma/
 │   │   └── schema.prisma        # Lược đồ CSDL chi tiết các bảng
 │   └── src/
-│       ├── common/              # Bộ lọc lỗi, interceptor, upload cloudinary
+│       ├── common/              # Bộ lọc ngoại lệ, interceptor, upload Cloudinary
 │       ├── modules/             # Các module nghiệp vụ (auth, hotels, rooms, bookings)
 │       ├── prisma/              # PrismaService kết nối database
 │       └── main.ts              # Entrypoint (CORS, ValidationPipe, Prefix api/v1)
-├── frontend/                    # Source code Frontend (Vue 3 + Vite + Tailwind)
+├── frontend/                    # Mã nguồn Frontend (Vue 3 + Vite + Tailwind)
 │   └── src/
-│       ├── components/common/   # BaseButton, BaseInput chuẩn thiết kế
-│       ├── layouts/             # MainLayout & BookingLayout
-│       ├── router/              # Cấu hình định tuyến và phân quyền
-│       ├── services/            # Axios API Client có Interceptor
+│       ├── components/common/   # Các UI component tái sử dụng (BaseButton, BaseInput)
+│       ├── layouts/             # Bố cục giao diện (MainLayout & BookingLayout)
+│       ├── router/              # Thiết lập route và guard phân quyền
+│       ├── services/            # Axios Client tích hợp Interceptor
 │       └── views/               # Landing, Login, Register, Dashboard, Hotels, Booking
-├── docker-compose.yml           # Khởi chạy PostgreSQL 16 (Port 5434)
-├── .env.example                 # File cấu hình mẫu biến môi trường
-├── .gitignore                   # Cấu hình Git bỏ qua file rác
+├── docker-compose.yml           # Cấu hình chạy PostgreSQL 16 (Port 5434)
+├── .env.example                 # File mẫu cấu hình biến môi trường
+├── .gitignore                   # Cấu hình bỏ qua tệp tin rác
 └── README.md                    # Tài liệu hướng dẫn & quy chuẩn dự án
 ```
 
 ---
 
-## 🚀 3. Hướng Dẫn Cài Đặt & Chạy Dự Án (Local Development)
+## 3. Hướng Dẫn Cài Đặt & Khởi Chạy (Local Development)
 
-### Bước 1: Chuẩn bị biến môi trường
-Copy file cấu hình mẫu `.env.example` thành file `.env` ở cả thư mục gốc và thư mục `backend/`:
+### 📌 Tổng quan các cổng dịch vụ (Ports)
+| Dịch vụ | Cổng (Port) | Đường dẫn mặc định |
+| :--- | :--- | :--- |
+| **Frontend Web** | `5173` | `http://localhost:5173` |
+| **Backend API** | `3000` | `http://localhost:3000/api/v1` |
+| **PostgreSQL Database** | `5434` | Chạy nền qua Docker (tránh trùng cổng mặc định 5432) |
+
+---
+
+### Các bước cài đặt chi tiết:
+
+#### 🔹 Bước 1: Khởi tạo biến môi trường
+Sao chép cấu hình mẫu `.env.example` sang file `.env` ở cả thư mục gốc và thư mục `backend/`:
 ```bash
 cp .env.example .env
 cp .env.example backend/.env
 ```
 
-### Bước 2: Khởi chạy Database bằng Docker
-Đảm bảo đã bật **Docker Desktop**, sau đó chạy lệnh tại thư mục gốc:
+#### 🔹 Bước 2: Khởi động Database qua Docker
+Đảm bảo **Docker Desktop** đã được mở, sau đó khởi chạy container PostgreSQL:
 ```bash
 docker compose up -d
 ```
-> Database PostgreSQL sẽ chạy tại cổng `5434` (để tránh xung đột với các service Postgres mặc định cổng 5432 trên máy).
 
-### Bước 3: Cài đặt & Chạy Backend (NestJS)
+#### 🔹 Bước 3: Cài đặt và chạy Backend (NestJS)
+Mở một cửa sổ Terminal và tiến hành cài đặt thư viện, generate Prisma schema và khởi động server:
 ```bash
 cd backend
 npm install
@@ -75,121 +121,134 @@ npx prisma generate
 npx prisma migrate dev
 npm run start:dev
 ```
-> Server API Backend sẽ chạy tại: `http://localhost:3000/api/v1`
+> API Server sẽ sẵn sàng phục vụ tại: `http://localhost:3000/api/v1`
 
-### Bước 4: Cài đặt & Chạy Frontend (Vue 3)
-Mở một cửa sổ Terminal mới:
+#### 🔹 Bước 4: Cài đặt và chạy Frontend (Vue 3)
+Mở một cửa sổ Terminal riêng biệt cho Frontend:
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-> Ứng dụng Web sẽ chạy tại: `http://localhost:5173`
+> Truy cập giao diện ứng dụng tại: `http://localhost:5173`
 
 ---
 
-##  4. Quy Chuẩn Làm Việc Git & GitHub (Tránh Conflict)
+## 4. Quy Chuẩn Làm Việc Git & GitHub
 
-Để tránh tình trạng đè code, conflict và làm hỏng nhánh chung, toàn bộ thành viên **bắt buộc tuân thủ 100%** quy trình dưới đây:
+Nhằm đảm bảo an toàn cho mã nguồn và phòng tránh tối đa xung đột (conflict), tất cả thành viên **bắt buộc tuân thủ 100%** các quy định dưới đây.
 
-###  4.1. Ba Điều Cấm
-1.  **KHÔNG** bao giờ được `git push` trực tiếp lên nhánh `main` hoặc `develop`. Mọi code mới phải đi qua Pull Request.
-2.  **KHÔNG** commit các file cấu hình môi trường cá nhân (`.env`), file rác hệ điều hành, hay thư mục thư viện (`node_modules/`, `dist/`).
-3.  **KHÔNG** tự ý sửa code của module khác nếu chưa trao đổi trước với người phụ trách module đó.
+### 4.1. Ba Điều Cấm
 
----
-
-###  4.2. Quy Tắc Đặt Tên Nhánh (Branch Naming)
-Mọi nhánh tính năng phải được tách ra từ nhánh **`develop`** mới nhất:
-- Tính năng Backend: `feat/be-<tên-chức-năng>` (VD: `feat/be-auth-jwt`, `feat/be-hotels-crud`, `feat/be-booking`)
-- Tính năng Frontend: `feat/fe-<tên-chức-năng>` (VD: `feat/fe-login-page`, `feat/fe-hotel-list`, `feat/fe-booking-flow`)
-- Sửa lỗi: `fix/be-<tên-lỗi>` hoặc `fix/fe-<tên-lỗi>` (VD: `fix/fe-booking-date-picker`)
-- Cấu hình / Tối ưu: `chore/<nội-dung>` hoặc `refactor/<nội-dung>`
+> [!CAUTION]
+> 1. **TUYỆT ĐỐI KHÔNG** `git push` trực tiếp lên nhánh `main` hoặc `develop`. Mọi thay đổi đều phải thông qua Pull Request (PR).
+> 2. **TUYỆT ĐỐI KHÔNG** commit các file nhạy cảm (`.env`), file rác của hệ điều hành, hay thư mục phụ thuộc (`node_modules/`, `dist/`).
+> 3. **TUYỆT ĐỐI KHÔNG** tự ý can thiệp vào mã nguồn module của người khác khi chưa có sự thống nhất trước.
 
 ---
 
-###  4.3. Quy Tắc Viết Commit Message (Conventional Commits)
-Thông điệp commit phải rõ ràng, giải thích mình đã làm gì:
-- `feat(scope): ...` — Thêm tính năng mới (VD: `feat(auth): thêm api đăng nhập bằng jwt`)
-- `fix(scope): ...` — Sửa lỗi (VD: `fix(booking): sửa lỗi tính toán ngày nhận/trả phòng`)
-- `style(scope): ...` — Căn chỉnh CSS, giao diện người dùng, không đổi logic code
-- `refactor(scope): ...` — Tái cấu trúc code, dọn dẹp logic
-- `docs(scope): ...` — Viết thêm hoặc sửa tài liệu README, swagger
+### 4.2. Quy Tắc Đặt Tên Nhánh
+
+Mọi nhánh chức năng phải được tách từ nhánh **`develop`** mới nhất:
+
+| Loại công việc | Định dạng đặt tên | Ví dụ cụ thể |
+| :--- | :--- | :--- |
+| **Backend Feature** | `feat/be-<tên-chức-năng>` | `feat/be-auth-jwt`, `feat/be-hotels-crud`, `feat/be-booking` |
+| **Frontend Feature** | `feat/fe-<tên-chức-năng>` | `feat/fe-login-page`, `feat/fe-hotel-list`, `feat/fe-booking-flow` |
+| **Sửa lỗi (Bugfix)** | `fix/be-<lỗi>` hoặc `fix/fe-<lỗi>` | `fix/fe-booking-date-picker`, `fix/be-token-expired` |
+| **Tối ưu / Cấu hình** | `chore/<nội-dung>` hoặc `refactor/<nội-dung>` | `chore/update-dependencies`, `refactor/booking-service` |
 
 ---
 
-###  4.4. Quy Trình 6 Bước Làm Việc  (Daily Workflow)
+### 4.3. Quy Chuẩn Commit Message
 
-Mỗi khi bắt đầu làm một tính năng mới hoặc bắt đầu một buổi code, hãy thực hiện theo đúng thứ tự:
+Sử dụng định dạng **Conventional Commits** để thể hiện rõ ràng mục đích thay đổi:
 
-#### 🔹 Bước 1: Luôn cập nhật `develop` mới nhất về máy
+| Tiền tố | Mô tả mục đích | Ví dụ minh họa |
+| :--- | :--- | :--- |
+| `feat(scope)` | Bổ sung tính năng mới | `feat(auth): thêm api đăng nhập bằng jwt` |
+| `fix(scope)` | Vá lỗi hệ thống | `fix(booking): sửa lỗi tính toán ngày nhận/trả phòng` |
+| `style(scope)` | Căn chỉnh CSS, giao diện (không đổi logic) | `style(hotel-card): chuẩn hóa khoảng cách hiển thị giá` |
+| `refactor(scope)` | Tái cấu trúc mã nguồn, dọn dẹp logic | `refactor(rooms): tối ưu truy vấn lấy danh sách phòng trống` |
+| `docs(scope)` | Bổ sung, điều chỉnh tài liệu | `docs(readme): làm mới hướng dẫn và quy chuẩn dự án` |
+
+---
+
+### 4.4. Quy Trình 6 Bước Làm Việc Hằng Ngày
+
+Khi bắt đầu ca làm việc hoặc triển khai tính năng mới, hãy thực hiện tuần tự:
+
+```mermaid
+graph LR
+    A["1. Pull develop"] --> B["2. Tạo branch mới"]
+    B --> C["3. Code & Atomic Commit"]
+    C --> D["4. Đồng bộ develop"]
+    D --> E["5. Đẩy nhánh & Tạo PR"]
+    E --> F["6. Review & Squash Merge"]
+```
+
+#### 1️⃣ Bước 1: Đồng bộ nhánh `develop` mới nhất về máy
 ```bash
 git checkout develop
 git pull origin develop
 ```
 
-#### 🔹 Bước 2: Tạo nhánh mới từ `develop` sạch
+#### 2️⃣ Bước 2: Khởi tạo nhánh mới từ `develop`
 ```bash
 git checkout -b feat/fe-hotel-list
 ```
 
-#### 🔹 Bước 3: Code và Commit từng phần nhỏ (Atomic Commits)
-- Không gom toàn bộ việc của cả tuần vào 1 commit lớn.
-- Làm xong một component, một hàm -> Kiểm tra chạy được -> Commit ngay:
+#### 3️⃣ Bước 3: Code và Commit từng phần nhỏ (Atomic Commits)
+Không dồn toàn bộ công việc vào một commit lớn. Hoàn tất từng hàm/component -> Kiểm tra chạy ổn định -> Commit ngay:
 ```bash
 git status
 git add src/views/HotelListView.vue
 git commit -m "feat(hotels): hoàn thiện giao diện danh sách khách sạn"
 ```
 
-#### 🔹 Bước 4: Đồng bộ `develop` về nhánh trước khi tạo PR (BƯỚC QUAN TRỌNG NHẤT ĐỂ TRÁNH CONFLICT)
-Trước khi đẩy code lên GitHub, hãy kéo những thay đổi mới nhất mà các bạn khác vừa merge vào `develop`:
+#### 4️⃣ Bước 4: Kéo cập nhật từ `develop` trước khi mở PR *(Rất quan trọng để tránh conflict)*
 ```bash
 git checkout develop
 git pull origin develop
 git checkout feat/fe-hotel-list
 git merge develop
 ```
-- **Nếu không có conflict:** Git sẽ tự merge êm đẹp.
-- **Nếu có conflict:** Xem ngay mục **4.5** bên dưới để xử lý tại máy cá nhân.
+* **Không xung đột:** Git sẽ tự động hợp nhất an toàn.
+* **Có xung đột:** Tham khảo ngay mục [4.5](#45-hướng-dẫn-xử-lý-xung-đột-conflict) bên dưới.
 
-#### 🔹 Bước 5: Đẩy nhánh lên GitHub và Tạo Pull Request (PR)
+#### 5️⃣ Bước 5: Đẩy nhánh lên remote và tạo Pull Request
 ```bash
 git push -u origin feat/fe-hotel-list
 ```
-1. Truy cập vào GitHub Repository: [miyxotkem/SE100_DatPhongKhachSan](https://github.com/miyxotkem/SE100_DatPhongKhachSan).
+1. Truy cập repo: [miyxotkem/SE100_DatPhongKhachSan](https://github.com/miyxotkem/SE100_DatPhongKhachSan).
 2. Nhấn nút **Compare & pull request**.
-3. **CHÚ Ý:** Chọn `base: develop` ⬅️ `compare: feat/fe-hotel-list`.
-4. Điền tiêu đề và nội dung theo form **Pull Request Template** có sẵn (nêu rõ các màn hình đã làm, ảnh chụp demo nếu là FE).
+3. **Lưu ý cấu hình nhánh:** `base: develop` ⬅️ `compare: feat/fe-hotel-list`.
+4. Điền đầy đủ thông tin theo mẫu **Pull Request Template**.
 
-#### 🔹 Bước 6: Review & Merge
-1. Chờ GitHub Actions CI chạy tự động: Đảm bảo cả Backend và Frontend đều xanh tick (**All checks have passed**).
-2. Báo Tech Lead hoặc bạn phản biện trong cặp review code.
-3. Khi nhận được **Approve**, Tech Lead hoặc tác giả sẽ bấm **Squash and merge** để gộp commit gọn gàng vào `develop`.
-4. Xóa nhánh tính năng cũ trên GitHub và ở máy local để tránh rác nhánh:
+#### 6️⃣ Bước 6: Kiểm tra CI, Review & Merge
+1. Đợi GitHub Actions CI hoàn tất kiểm tra tự động (**All checks have passed**).
+2. Thông báo đến Tech Lead hoặc người đánh giá phản biện.
+3. Sau khi nhận được **Approve**, tiến hành **Squash and merge** vào `develop`.
+4. Dọn dẹp nhánh cũ:
 ```bash
 git branch -d feat/fe-hotel-list
 ```
 
 ---
 
-###  4.5. Hướng Dẫn Xử Lý Khi Gặp Conflict (Xung Đột Code)
+### 4.5. Hướng Dẫn Xử Lý Xung Đột (Conflict)
 
-Khi chạy `git merge develop` mà màn hình hiện chữ đỏ `CONFLICT (content): Merge conflict in ...`:
+Khi chạy `git merge develop` gặp thông báo `CONFLICT (content): Merge conflict in ...`:
 
-1. **Đừng hoảng loạn!** Mở VS Code lên, các file bị conflict sẽ có màu cam/đỏ.
-2. Mở file đó ra, VS Code sẽ highlight rõ ràng:
-   - **Current Change (Code nhánh của bạn đang làm)**
-   - **Incoming Change (Code từ develop do bạn khác vừa push lên)**
-3. VS Code cung cấp 4 nút bấm tiện lợi ngay phía trên đoạn code xung đột:
-   - `Accept Current Change`: Giữ code của bạn.
-   - `Accept Incoming Change`: Lấy code mới của bạn khác.
-   - `Accept Both Changes`: Giữ cả hai đoạn code.
-4. **Nguyên tắc vàng:** Nếu xung đột với code người khác, hãy nhắn tin thoại/hỏi trực tiếp người đó để thống nhất chọn đoạn code nào, **tuyệt đối không tự ý xóa code của team**.
-5. Sau khi chỉnh sửa xong nội dung chuẩn:
-   - Chạy thử kiểm tra lại: `npm run build` (hoặc `npm test`) xem còn lỗi cú pháp không.
-   - Lưu file lại, gõ lệnh hoàn tất merge:
+1. **Giữ bình tĩnh:** Mở VS Code, các file có xung đột sẽ được đánh dấu màu cam/đỏ.
+2. **Kiểm tra vùng xung đột:**
+   - `Current Change`: Code trên nhánh bạn đang viết.
+   - `Incoming Change`: Code mới từ `develop` do thành viên khác vừa cập nhật.
+3. **Lựa chọn xử lý:** Sử dụng công cụ của VS Code (`Accept Current`, `Accept Incoming`, hoặc `Accept Both`).
+4. **Nguyên tắc phối hợp:** Nếu xung đột logic của người khác, hãy trao đổi trực tiếp với tác giả đoạn code đó; tuyệt đối không tự ý xoá code của đồng đội.
+5. **Hoàn tất merge:**
    ```bash
+   npm run build   # Kiểm tra tính toàn vẹn cú pháp sau khi giải quyết conflict
    git add .
    git commit -m "merge: giải quyết conflict với nhánh develop"
    git push origin feat/fe-hotel-list
@@ -197,9 +256,9 @@ Khi chạy `git merge develop` mà màn hình hiện chữ đỏ `CONFLICT (cont
 
 ---
 
-###  4.6. Phân Vùng Làm Việc Trong Monorepo
-Dự án dùng cấu trúc Monorepo (Frontend và Backend nằm chung 1 Repository), do đó:
-- Thành viên làm **Backend**: Chỉ thao tác và chỉnh sửa trong thư mục `backend/`.
-- Thành viên làm **Frontend**: Chỉ thao tác và chỉnh sửa trong thư mục `frontend/`.
-- **Package Lock**: Khi cài thêm bất kỳ thư viện NPM nào (`package.json`), cần thông báo lên nhóm chat để các thành viên khác chạy lại `npm install` khi pull code về.
-- Mọi chỉnh sửa ở thư mục gốc (`docker-compose.yml`, `.github/`, root `.env`) phải do **Tech Lead** quyết định.
+### 4.6. Phân Vùng Quyền Hạn Trong Monorepo
+
+* **Backend Dev:** Chỉ thực hiện thay đổi trong phạm vi thư mục `backend/`.
+* **Frontend Dev:** Chỉ thực hiện thay đổi trong phạm vi thư mục `frontend/`.
+* **Quản lý Dependencies:** Khi cài thêm gói NPM mới, phải thông báo lên nhóm để các thành viên khác chạy lại `npm install` khi đồng bộ code.
+* **Cấu hình dùng chung:** Mọi thay đổi ở root (`docker-compose.yml`, `.github/`, `.env.example`) phải được thống nhất qua **Tech Lead**.
