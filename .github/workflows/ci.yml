@@ -2,9 +2,9 @@ name: Hotel Booking Monorepo CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, 'feat/**' ]
   pull_request:
-    branches: [ main, develop ]
+    branches: [ main, 'feat/**' ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

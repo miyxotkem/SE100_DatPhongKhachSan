@@ -141,22 +141,41 @@ Nhằm đảm bảo an toàn cho mã nguồn và phòng tránh tối đa xung đ
 ### 4.1. Ba Điều Cấm
 
 > [!CAUTION]
-> 1. **TUYỆT ĐỐI KHÔNG** `git push` trực tiếp lên nhánh `main` hoặc `develop`. Mọi thay đổi đều phải thông qua Pull Request (PR).
+> 1. **TUYỆT ĐỐI KHÔNG** `git push` trực tiếp lên nhánh `main` hoặc nhánh tích hợp `feat/<module>`. Mọi thay đổi đều phải thông qua Pull Request (PR).
 > 2. **TUYỆT ĐỐI KHÔNG** commit các file nhạy cảm (`.env`), file rác của hệ điều hành, hay thư mục phụ thuộc (`node_modules/`, `dist/`).
 > 3. **TUYỆT ĐỐI KHÔNG** tự ý can thiệp vào mã nguồn module của người khác khi chưa có sự thống nhất trước.
 
 ---
 
-### 4.2. Quy Tắc Đặt Tên Nhánh
+### 4.2. Quy Tắc Đặt Tên & Phân Cấp Nhánh
 
-Mọi nhánh chức năng phải được tách từ nhánh **`develop`** mới nhất:
+Dự án áp dụng mô hình **Feature Integration Branching** với **`main`** là nhánh mặc định (production-ready). Mỗi tính năng lớn/module được phân cấp rõ ràng thành 2 tầng nhánh:
 
-| Loại công việc | Định dạng đặt tên | Ví dụ cụ thể |
-| :--- | :--- | :--- |
-| **Backend Feature** | `feat/be-<tên-chức-năng>` | `feat/be-auth-jwt`, `feat/be-hotels-crud`, `feat/be-booking` |
-| **Frontend Feature** | `feat/fe-<tên-chức-năng>` | `feat/fe-login-page`, `feat/fe-hotel-list`, `feat/fe-booking-flow` |
-| **Sửa lỗi (Bugfix)** | `fix/be-<lỗi>` hoặc `fix/fe-<lỗi>` | `fix/fe-booking-date-picker`, `fix/be-token-expired` |
-| **Tối ưu / Cấu hình** | `chore/<nội-dung>` hoặc `refactor/<nội-dung>` | `chore/update-dependencies`, `refactor/booking-service` |
+```mermaid
+flowchart TD
+    MAIN["main (Nhánh chính mặc định - Production)"]
+    MOD["feat/&lt;tên-module&gt; (Nhánh tích hợp module)"]
+    FE["feat/fe-&lt;tên-module&gt; (Frontend Dev)"]
+    BE["feat/be-&lt;tên-module&gt; (Backend Dev)"]
+
+    MAIN -- "1. Tách nhánh module" --> MOD
+    MOD -- "2. Tách nhánh FE" --> FE
+    MOD -- "2. Tách nhánh BE" --> BE
+    FE -- "3. PR: Merge FE vào module" --> MOD
+    BE -- "3. PR: Merge BE vào module" --> MOD
+    MOD -- "4. Kiểm thử tích hợp OK -> PR merge vào main" --> MAIN
+```
+
+#### Bảng quy chuẩn đặt tên nhánh:
+
+| Cấp nhánh | Định dạng đặt tên | Tách từ nhánh | Mục đích / Ví dụ |
+| :--- | :--- | :--- | :--- |
+| **Nhánh chính** | `main` | - | Nhánh mặc định, chứa mã nguồn ổn định nhất đã hoàn thiện tích hợp. |
+| **Nhánh Module** | `feat/<tên-module>` | `main` | Nhánh gom và tích hợp chung của module (Ví dụ: `feat/hotels`, `feat/booking`, `feat/auth`). |
+| **Backend Dev** | `feat/be-<tên-module>` | `feat/<tên-module>` | Backend triển khai API, DB migration (Ví dụ: `feat/be-hotels`, `feat/be-booking`). |
+| **Frontend Dev** | `feat/fe-<tên-module>` | `feat/<tên-module>` | Frontend xây dựng UI, state, gọi API (Ví dụ: `feat/fe-hotels`, `feat/fe-booking`). |
+| **Sửa lỗi Module** | `fix/fe-<lỗi>` / `fix/be-<lỗi>` | `feat/<tên-module>` | Sửa lỗi phát sinh trong quá trình tích hợp module. |
+| **Hotfix khẩn cấp** | `hotfix/<tên-lỗi>` | `main` | Vá lỗi nghiêm trọng trực tiếp trên môi trường chạy thực tế. |
 
 ---
 
@@ -176,26 +195,43 @@ Sử dụng định dạng **Conventional Commits** để thể hiện rõ ràng
 
 ### 4.4. Quy Trình 6 Bước Làm Việc Hằng Ngày
 
-Khi bắt đầu ca làm việc hoặc triển khai tính năng mới, hãy thực hiện tuần tự:
+Khi nhận nhiệm vụ cho một module mới, các thành viên thực hiện theo quy trình sau:
 
 ```mermaid
 graph LR
-    A["1. Pull develop"] --> B["2. Tạo branch mới"]
+    A["1. Đồng bộ feat/module"] --> B["2. Tạo nhánh FE / BE"]
     B --> C["3. Code & Atomic Commit"]
-    C --> D["4. Đồng bộ develop"]
-    D --> E["5. Đẩy nhánh & Tạo PR"]
-    E --> F["6. Review & Squash Merge"]
+    C --> D["4. Đồng bộ nhánh module"]
+    D --> E["5. PR vào feat/module"]
+    E --> F["6. Tích hợp & PR vào main"]
 ```
 
-#### 1️⃣ Bước 1: Đồng bộ nhánh `develop` mới nhất về máy
-```bash
-git checkout develop
-git pull origin develop
-```
+#### 1️⃣ Bước 1: Khởi tạo hoặc kéo nhánh module chung (`feat/<tên-module>`)
+- Nếu nhánh module chưa có trên GitHub, Tech Lead/đại diện tạo từ `main`:
+  ```bash
+  git checkout main
+  git pull origin main
+  git checkout -b feat/booking
+  git push -u origin feat/booking
+  ```
+- Nếu nhánh module đã có sẵn trên GitHub:
+  ```bash
+  git checkout main
+  git pull origin main
+  git fetch origin
+  git checkout feat/booking
+  git pull origin feat/booking
+  ```
 
-#### 2️⃣ Bước 2: Khởi tạo nhánh mới từ `develop`
+#### 2️⃣ Bước 2: Tách nhánh làm việc con (`fe` hoặc `be`) từ nhánh module
 ```bash
-git checkout -b feat/fe-hotel-list
+# Đối với Frontend:
+git checkout feat/booking
+git checkout -b feat/fe-booking
+
+# Đối với Backend:
+git checkout feat/booking
+git checkout -b feat/be-booking
 ```
 
 #### 3️⃣ Bước 3: Code và Commit từng phần nhỏ (Atomic Commits)
@@ -206,52 +242,58 @@ git add src/views/HotelListView.vue
 git commit -m "feat(hotels): hoàn thiện giao diện danh sách khách sạn"
 ```
 
-#### 4️⃣ Bước 4: Kéo cập nhật từ `develop` trước khi mở PR *(Rất quan trọng để tránh conflict)*
+#### 4️⃣ Bước 4: Kéo cập nhật từ nhánh module chung trước khi mở PR *(Tránh conflict)*
 ```bash
-git checkout develop
-git pull origin develop
-git checkout feat/fe-hotel-list
-git merge develop
+git checkout feat/booking
+git pull origin feat/booking
+git checkout feat/fe-booking
+git merge feat/booking
 ```
 * **Không xung đột:** Git sẽ tự động hợp nhất an toàn.
 * **Có xung đột:** Tham khảo ngay mục [4.5](#45-hướng-dẫn-xử-lý-xung-đột-conflict) bên dưới.
 
-#### 5️⃣ Bước 5: Đẩy nhánh lên remote và tạo Pull Request
+#### 5️⃣ Bước 5: Đẩy nhánh lên GitHub và tạo Pull Request vào nhánh Module
 ```bash
-git push -u origin feat/fe-hotel-list
+git push -u origin feat/fe-booking
 ```
 1. Truy cập repo: [miyxotkem/SE100_DatPhongKhachSan](https://github.com/miyxotkem/SE100_DatPhongKhachSan).
 2. Nhấn nút **Compare & pull request**.
-3. **Lưu ý cấu hình nhánh:** `base: develop` ⬅️ `compare: feat/fe-hotel-list`.
-4. Điền đầy đủ thông tin theo mẫu **Pull Request Template**.
+3. **⚠️ Rất quan trọng - Cấu hình nhánh đích:**
+   - `base: feat/booking` ⬅️ `compare: feat/fe-booking` (hoặc `feat/be-booking`).
+4. Điền mô tả PR và đợi CI kiểm tra hoàn tất -> Tiến hành Review & Merge vào nhánh `feat/booking`.
 
-#### 6️⃣ Bước 6: Kiểm tra CI, Review & Merge
-1. Đợi GitHub Actions CI hoàn tất kiểm tra tự động (**All checks have passed**).
-2. Thông báo đến Tech Lead hoặc người đánh giá phản biện.
-3. Sau khi nhận được **Approve**, tiến hành **Squash and merge** vào `develop`.
-4. Dọn dẹp nhánh cũ:
-```bash
-git branch -d feat/fe-hotel-list
-```
+#### 6️⃣ Bước 6: Kiểm thử tích hợp toàn diện & Merge vào `main`
+Khi cả **Frontend** và **Backend** đều đã được merge vào `feat/booking`:
+1. Hai bên phối hợp chạy kiểm thử tích hợp (End-to-End): giao diện gọi API mượt mà, không phát sinh lỗi.
+2. Tạo Pull Request tổng để đưa module vào nhánh chính:
+   - `base: main` ⬅️ `compare: feat/booking`.
+3. Sau khi Tech Lead review và approve, thực hiện **Squash and merge** vào `main`.
+4. Dọn dẹp các nhánh tính năng đã hoàn thành trên local:
+   ```bash
+   git checkout main
+   git pull origin main
+   git branch -d feat/fe-booking
+   git branch -d feat/booking
+   ```
 
 ---
 
 ### 4.5. Hướng Dẫn Xử Lý Xung Đột (Conflict)
 
-Khi chạy `git merge develop` gặp thông báo `CONFLICT (content): Merge conflict in ...`:
+Khi chạy `git merge feat/<tên-module>` gặp thông báo `CONFLICT (content): Merge conflict in ...`:
 
 1. **Giữ bình tĩnh:** Mở VS Code, các file có xung đột sẽ được đánh dấu màu cam/đỏ.
 2. **Kiểm tra vùng xung đột:**
    - `Current Change`: Code trên nhánh bạn đang viết.
-   - `Incoming Change`: Code mới từ `develop` do thành viên khác vừa cập nhật.
+   - `Incoming Change`: Code mới từ nhánh module chung do thành viên khác vừa cập nhật.
 3. **Lựa chọn xử lý:** Sử dụng công cụ của VS Code (`Accept Current`, `Accept Incoming`, hoặc `Accept Both`).
-4. **Nguyên tắc phối hợp:** Nếu xung đột logic của người khác, hãy trao đổi trực tiếp với tác giả đoạn code đó; tuyệt đối không tự ý xoá code của đồng đội.
+4. **Nguyên tắc phối hợp:** Nếu xung đột liên quan đến logic của người khác, hãy trao đổi trực tiếp với tác giả đoạn code đó; tuyệt đối không tự ý xoá code của đồng đội.
 5. **Hoàn tất merge:**
    ```bash
    npm run build   # Kiểm tra tính toàn vẹn cú pháp sau khi giải quyết conflict
    git add .
-   git commit -m "merge: giải quyết conflict với nhánh develop"
-   git push origin feat/fe-hotel-list
+   git commit -m "merge: giải quyết conflict với nhánh feat/booking"
+   git push origin feat/fe-booking
    ```
 
 ---
